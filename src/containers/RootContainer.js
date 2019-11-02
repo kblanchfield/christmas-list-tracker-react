@@ -9,7 +9,7 @@ function RootContainer(){
     return (
         <>
             {auth.id
-                ? <Lists user={auth} />
+                ? <Lists />
                 : <LogInForm />
             }
         </>
