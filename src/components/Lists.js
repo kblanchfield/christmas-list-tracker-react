@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import React from 'react'
 import PersonalList from './PersonalList'
 import OthersLists from './OthersLists'
 import '../App.css'
 
-const Lists = ( )=> {
+const Lists = () => {
   return (
-    <>
+    <div className='all-lists'>
         <PersonalList />
         <OthersLists />
-    </>
+    </div>
   )
 }
 

@@ -1,0 +1,18 @@
+.list {
+    width: 80%;
+    height: auto;
+    text-align: left;
+}
+
+.name {
+    font-family: 'Fredericka the Great', cursive;
+    font-size: 35px;
+}
+
+.far {
+    margin-right: 5px;
+}
+
+button {
+    all: unset;
+}

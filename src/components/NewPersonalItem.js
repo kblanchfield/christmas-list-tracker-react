@@ -1,5 +1,7 @@
 import React, { useRef, useContext } from "react"
+import { authContext } from "../contexts/AuthContext"
 import { listsContext } from "../contexts/ListsContext"
+import { apiRequest } from '../utils/Helpers'
 
 /** Presentation */
 import ErrorMessage from "../components/ErrorMessage"
@@ -8,27 +10,47 @@ import ErrorMessage from "../components/ErrorMessage"
 import useErrorHandler from "../utils/custom-hooks/ErrorHandler"
 
 const AddItem = () => {
-    const lists = useContext(listsContext)
+    const { auth } = useContext(authContext)
+    const { updatePersonalList } = useContext(listsContext)
     const { error, showError } = useErrorHandler(null)
     const itemNameInput = useRef(null)
     const itemCommentInput = useRef(null)
     const itemLinksInput = useRef(null)
 
+    const resetForm = () => {
+        itemNameInput.current.value = ""
+        itemCommentInput.current.value = ""
+        itemLinksInput.current.value = ""
+    }
+
     const addNewItem = async () => {
         if (!itemNameInput.current) {
-            return showError("Please type an item before clicking add.")
+            return showError("You've got to name your item before clicking add.")
         }
         const itemName = itemNameInput.current.value
         const itemComment = itemCommentInput.current.value
         const itemLinks = itemLinksInput.current.value
         // post new item to db and get back complete personal list for user_id
-        // const allItems = await apiRequest(
-        //     "https://jsonplaceholder.typicode.com/items",
-        //     "post",
-        //     { newItem: { name: itemName, comment: itemComment, links: itemLinks } }
-        //   )
-        const newPersonalList = [{ name: itemName, comment: itemComment, links: itemLinks }]
-        lists.updatePersonalList(newPersonalList)
+        const newItem = await apiRequest(
+            "http://localhost:4001/items",
+            "post",
+            { item: { username: auth.name, name: itemName, comment: itemComment, links: itemLinks, bought: false }}
+        )
+        if (!newItem.created) {
+            console.log("item not added for some reason")
+            return
+        }
+        console.log("getting personal list from NewPersonalItem component")
+        const newList = await apiRequest(
+            `http://localhost:4001/items/${auth.name}`,
+            "get"
+        )
+        if (!newList.found) {
+            console.log("couldn't find personal list for some reason")
+            return
+        }
+        updatePersonalList(newList.personalList)
+        resetForm()
     }
 
     return (
