@@ -14,7 +14,9 @@
   flex-flow: column nowrap;
   justify-content: flex-start;
   align-items: center;
-  background-color: pink;
+  /* background-color: #E7DADA; */
+  background-color: #d0d0d0;
+  overflow: scroll;
 }
 
 .display-name {
@@ -24,17 +26,18 @@
 .others-lists {
   display: flex;
   flex-flow: row wrap;
-  background-color: yellow;
+  background-color: #d8dcd6;
 }
 
 .others-list {
+  height: auto;
   width: 50%;
   min-width: 400px;
   display: flex;
   flex-flow: column nowrap;
   justify-content: flex-start;
   align-items: center;
-  background-color: lightblue;
+  background-color: #d8dcd6;
   overflow: scroll;
 }
 
@@ -42,5 +45,9 @@ input, button {
   display: block;
   margin: 10px;
   padding: 6px;
+}
+
+button {
+  cursor: pointer;
 }
 

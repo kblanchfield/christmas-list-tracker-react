@@ -29,7 +29,7 @@ const AddItem = () => {
         }
         const itemName = itemNameInput.current.value
         const itemComment = itemCommentInput.current.value
-        const itemLinks = itemLinksInput.current.value
+        const itemLinks = itemLinksInput.current.value.split(',')
         // post new item to db and get back complete personal list for user_id
         const newItem = await apiRequest(
             "http://localhost:4001/items",
@@ -54,21 +54,24 @@ const AddItem = () => {
     }
 
     return (
-        <form
-            onSubmit={e => {
-                e.preventDefault()
-                addNewItem()
-            }}
-        >
-            <input type="text" ref={itemNameInput} placeholder="Item name" />
-            <input type="text" ref={itemCommentInput} placeholder="Comments" />
-            <input type="text" ref={itemLinksInput} placeholder="Links" />
-            <button type="submit">
-                Add
-            </button>
-            <br />
-            {error && <ErrorMessage errorMessage={error} />}
-        </form>
+        <div className="new-personal-item">
+            <p>Add an item to your list below.</p>
+            <form
+                onSubmit={e => {
+                    e.preventDefault()
+                    addNewItem()
+                }}
+            >
+                <input type="text" ref={itemNameInput} placeholder="Item name" />
+                <input type="text" ref={itemCommentInput} placeholder="Comments" />
+                <input type="text" ref={itemLinksInput} placeholder="Links (separated by a comma if more than one link)" />
+                <button type="submit">
+                    Add
+                </button>
+                <br />
+                {error && <ErrorMessage errorMessage={error} />}
+            </form>
+        </div>
     )
 }
 
