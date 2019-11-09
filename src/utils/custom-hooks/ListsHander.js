@@ -1,18 +1,16 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 
 const useListsHandler = () => {
     const [personalList, setPersonalList] = useState([])
     const [othersLists, setOthersLists] = useState({})
 
-    const updatePersonalList = list => {
-        console.log("updating personal list with: ", list)
+    const updatePersonalList = useCallback(list => {
         setPersonalList(list)
-    }
+    }, [])
 
-    const updateOthersLists = lists => {
-        console.log("updating others lists with: ", lists)
+    const updateOthersLists = useCallback(lists => {
         setOthersLists(lists)
-    }
+    }, [])
 
     return {
         personalList,

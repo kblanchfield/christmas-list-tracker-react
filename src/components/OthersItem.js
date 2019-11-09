@@ -6,10 +6,8 @@ import './Lists.css'
 
 const OthersItem = ({ username, name, comment, links, reserver, buyer, bought }) => {
 
-    console.log(username, name, comment, links, reserver, buyer, bought)
-
     const { auth } = useContext(authContext)
-    const { othersLists, updateOthersLists } = useContext(listsContext)
+    const { updateOthersLists } = useContext(listsContext)
   
     const getUpdatedOthersLists = async () => {
         const newLists = await apiRequest(
@@ -21,63 +19,76 @@ const OthersItem = ({ username, name, comment, links, reserver, buyer, bought })
             return
         }
         updateOthersLists(newLists.othersLists)
-        console.log("new lists context: ", othersLists)
     }
 
     const updateBoughtState = async () => {
-        const response = await apiRequest(
-            `http://localhost:4001/items`,
-            "put",
-            { item: { username, name, comment, links, buyer: auth.name, reserver, bought: !bought }}
-        )
-        if (!response.updated) {
-            console.log("couldn't update others' lists for some reason")
-            return
-        } else {
-            console.log("item updated")
+        if (!reserver || reserver === auth.name || buyer === auth.name) {
+            const response = await apiRequest(
+                `http://localhost:4001/items`,
+                "put",
+                { item: { username, name, comment, links, buyer: auth.name, reserver, bought: !bought }}
+            )
+            if (!response.updated) {
+                console.log("Couldn't update others' lists for some reason")
+                return
+            } else {
+                console.log("Item updated")
+            }
+            getUpdatedOthersLists()
         }
-        getUpdatedOthersLists()
     }
 
     const updateReservedState = async () => {
-        const newReserver = reserver ? '' : auth.name
-        const response = await apiRequest(
-            `http://localhost:4001/items`,
-            "put",
-            { item: { username, name, comment, links, reserver: newReserver, bought: false }}
-        )
-        if (!response.updated) {
-            console.log("couldn't update others' lists for some reason")
-            return
-        } else {
-            console.log("item updated")
+        if (!reserver || reserver === auth.name || reserver === '') {
+            const newReserver = reserver ? '' : auth.name
+            const response = await apiRequest(
+                `http://localhost:4001/items`,
+                "put",
+                { item: { username, name, comment, links, reserver: newReserver, bought: false }}
+            )
+            if (!response.updated) {
+                console.log("Couldn't update others' lists for some reason")
+                return
+            } else {
+                console.log("Item updated")
+            }
+            getUpdatedOthersLists()
         }
-        getUpdatedOthersLists()
     }
 
     return (
         <div style={{ textDecoration: bought ? 'line-through' : ''}}>
             <p>
-                <button onClick={updateBoughtState}>
+                <button className="hidden-button" onClick={updateBoughtState}>
                     {bought 
                         ? <i className="far fa-check-square"></i>
                         : <i className="far fa-square"></i>
                     }
                 </button>
-                {name}, {comment}, {links.map(link => {
-                if (link.length > 0) {
-                    return <a href={link} target='_blank' key={link}>Link</a>
-                }
+                {name}
+                <span className="item-comment"> - {comment}</span>, 
+                {links.map((link, index) => {
+                    if (link.length > 0) {
+                        console.log(username, " link ", index)
+                        if (index === links.length - 1) {
+                            console.log(index, " last link: ", link)
+                            return <a href={link} target='_blank' rel="noopener noreferrer" key={index}>Link</a>
+                        } else {
+                            console.log(index, " not last link: ", link)
+                            return <a href={link} target='_blank' rel="noopener noreferrer" key={index}>Link</a>
+                        }
+                    }
                 })}
+                <br />
                 {bought
-                    ? `Bought by ${buyer}`
+                    ? ` (bought by ${buyer})`
                     :
-                        <button onClick={updateReservedState}>
-                            <i className="fas fa-snowman"></i>
+                        <button className="hidden-button" onClick={updateReservedState}>
+                            <i style={{ color: reserver ? '#C0392B' : 'black', marginLeft: '-1px'}} className="fas fa-snowman"></i>
                         </button>
                 }
                 {!bought && reserver
-                    ? `Reserved by ${reserver}`
+                    ? ` (reserved by ${reserver})`
                     : ''
                 }
             </p>
