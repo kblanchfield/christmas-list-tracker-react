@@ -50,6 +50,7 @@ const AddItem = () => {
             console.log("couldn't find personal list for some reason")
             return
         }
+        console.log("new personal list: ", newList.personalList)
         updatePersonalList(newList.personalList)
         resetForm()
     }

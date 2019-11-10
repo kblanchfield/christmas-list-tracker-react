@@ -4,6 +4,7 @@ const { MG_URL, MG_DB } = process.env
 exports.handler = async (event, context) => {
     context.callbackWaitsForEmptyEventLoop = false
     const item = JSON.parse(event.body)
+    console.log("new item to add: ", item)
 
     try {
         const client = new MongoClient(MG_URL, { useNewUrlParser: true, useUnifiedTopology: true })

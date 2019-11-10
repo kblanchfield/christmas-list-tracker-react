@@ -65,7 +65,7 @@ const OthersItem = ({ username, name, comment, links, reserver, buyer, bought })
                 </button>
                 {name}
                 <span className="item-comment"> - {comment}</span>, 
-                {links.map((link, index) => {
+                {links ? links.map((link, index) => {
                     if (link.length > 0) {
                         if (index === links.length - 1) {
                             return <a href={link} target='_blank' rel="noopener noreferrer" key={index}>Link</a>
@@ -75,7 +75,7 @@ const OthersItem = ({ username, name, comment, links, reserver, buyer, bought })
                     } else {
                         return ''
                     }
-                })}
+                }) : ''}
                 <br />
                 {bought
                     ? ` (bought by ${buyer})`
