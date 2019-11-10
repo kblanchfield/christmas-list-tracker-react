@@ -32,7 +32,7 @@ const AddItem = () => {
         const itemLinks = itemLinksInput.current.value.split(',')
         // post new item to db and get back complete personal list for user_id
         const newItem = await apiRequest(
-            "http://localhost:4001/items",
+            "/.netlify/functions/add-personal-item",
             "post",
             { item: { username: auth.name, name: itemName, comment: itemComment, links: itemLinks, bought: false }}
         )
@@ -42,7 +42,7 @@ const AddItem = () => {
         }
         console.log("getting personal list from NewPersonalItem component")
         const newList = await apiRequest(
-            `http://localhost:4001/items/${auth.name}`,
+            `/.netlify/functions/personal-list?username=${auth.name}`,
             "get"
         )
         if (!newList.found) {

@@ -11,7 +11,7 @@ const OthersItem = ({ username, name, comment, links, reserver, buyer, bought })
   
     const getUpdatedOthersLists = async () => {
         const newLists = await apiRequest(
-            `http://localhost:4001/items/others/${auth.name}`,
+            `/.netlify/functions/others-lists/${auth.name}`,
             "get"
         )
         if (!newLists.found) {
@@ -24,7 +24,7 @@ const OthersItem = ({ username, name, comment, links, reserver, buyer, bought })
     const updateBoughtState = async () => {
         if (!reserver || reserver === auth.name || buyer === auth.name) {
             const response = await apiRequest(
-                `http://localhost:4001/items`,
+                `/.netlify/functions/update-others-item/`,
                 "put",
                 { item: { username, name, comment, links, buyer: auth.name, reserver, bought: !bought }}
             )
@@ -40,7 +40,7 @@ const OthersItem = ({ username, name, comment, links, reserver, buyer, bought })
         if (!reserver || reserver === auth.name || reserver === '') {
             const newReserver = reserver ? '' : auth.name
             const response = await apiRequest(
-                `http://localhost:4001/items`,
+                `/.netlify/functions/update-others-item/`,
                 "put",
                 { item: { username, name, comment, links, reserver: newReserver, bought: false }}
             )

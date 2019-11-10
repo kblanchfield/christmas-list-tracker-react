@@ -12,7 +12,7 @@ const OthersLists = () => {
   useEffect(() => {
     const getOthersLists = async () => {
       const newLists = await apiRequest(
-          `http://localhost:4001/items/others/${auth.name}`,
+          `/.netlify/functions/others-lists?username=${auth.name}`,
           "get"
       )
       if (!newLists.found) {

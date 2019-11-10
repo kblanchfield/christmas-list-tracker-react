@@ -14,7 +14,7 @@ const PersonalList = () => {
   useEffect(() => {
     const getPersonalList = async () => {
       const newList = await apiRequest(
-          `http://localhost:4001/items/${auth.name}`,
+          `/.netlify/functions/personal-list?username=${auth.name}`,
           "get"
       )
       if (!newList.found) {

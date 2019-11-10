@@ -17,11 +17,10 @@ const LogInForm = () => {
     try {
       setLoading(true)
       const userData = await apiRequest(
-        "http://localhost:4001/users",
+        "/.netlify/functions/user-login",
         "post",
         { username: userName, password: userPassword }
       )
-      console.log(userData)
       setLoading(false)
       const { id, name } = userData
       auth.setAuthStatus({ id, name })
@@ -60,7 +59,7 @@ const LogInForm = () => {
         <br />
         {error && <ErrorMessage errorMessage={error} />}
     </form>
-  );
+  )
 }
 
-export default LogInForm;
+export default LogInForm
