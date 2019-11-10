@@ -31,6 +31,7 @@ const AddItem = () => {
         const itemComment = itemCommentInput.current.value
         const itemLinks = itemLinksInput.current.value.split(',')
         // post new item to db and get back complete personal list for user_id
+        console.log("add new personal item: ", JSON.stringify({ username: auth.name, name: itemName, comment: itemComment, links: itemLinks, bought: false}, null, 2))
         const newItem = await apiRequest(
             "/.netlify/functions/add-personal-item",
             "post",

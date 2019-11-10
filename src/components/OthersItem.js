@@ -6,6 +6,8 @@ import './Lists.css'
 
 const OthersItem = ({ username, name, comment, links, reserver, buyer, bought }) => {
 
+    console.log("OthersItem: ", username, name, comment, links, reserver, buyer, bought)
+
     const { auth } = useContext(authContext)
     const { updateOthersLists } = useContext(listsContext)
   
