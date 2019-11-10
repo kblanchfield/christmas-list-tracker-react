@@ -1,4 +1,4 @@
-const { MongoClient } = require('mongodb')
+const MongoClient = require('mongodb').MongoClient
 const bcrypt = require('bcrypt-nodejs')
 const { MG_URL, MG_DB } = process.env
 
@@ -9,7 +9,7 @@ exports.handler = async (event, context) => {
     console.log(MG_URL, MG_DB)
 
     try {
-        const client = new MongoClient(MG_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+        const client = new MongoClient(MG_URL, { useUnifiedTopology: true })
         await client.connect()
         console.log("Connected correctly to db")
 
