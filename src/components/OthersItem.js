@@ -8,31 +8,19 @@ const OthersItem = ({ username, name, comment, links, reserver, buyer, bought })
 
     const { auth } = useContext(authContext)
     const { updateOthersLists } = useContext(listsContext)
-  
-    const getUpdatedOthersLists = async () => {
-        const newLists = await apiRequest(
-            `/.netlify/functions/others-lists?username=${auth.name}`,
-            "get"
-        )
-        if (!newLists.found) {
-            console.log("Couldn't find others' lists for some reason")
-            return
-        }
-        updateOthersLists(newLists.othersLists)
-    }
 
     const updateBoughtState = async () => {
         if (!reserver || reserver === auth.name || buyer === auth.name) {
             const response = await apiRequest(
                 `/.netlify/functions/update-others-item/`,
                 "put",
-                { username, name, comment, links, buyer: auth.name, reserver, bought: !bought }
+                { user: auth.name, item: { username, name, comment, links, buyer: auth.name, reserver, bought: !bought } }
             )
             if (!response.updated) {
                 console.log("Couldn't update others' lists for some reason")
                 return
             }
-            getUpdatedOthersLists()
+            updateOthersLists(response.othersLists)
         }
     }
 
@@ -42,13 +30,13 @@ const OthersItem = ({ username, name, comment, links, reserver, buyer, bought })
             const response = await apiRequest(
                 `/.netlify/functions/update-others-item/`,
                 "put",
-                { username, name, comment, links, reserver: newReserver, bought: false }
+                { user: auth.name, item: { username, name, comment, links, reserver: newReserver, bought: false } }
             )
             if (!response.updated) {
                 console.log("Couldn't update others' lists for some reason")
                 return
             }
-            getUpdatedOthersLists()
+            updateOthersLists(response.othersLists)
         }
     }
 

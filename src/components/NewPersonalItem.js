@@ -27,25 +27,16 @@ const AddItem = () => {
         const itemComment = itemCommentInput.current.value
         const itemLinks = itemLinksInput.current.value.split(',')
         
-        const newItem = await apiRequest(
+        const response = await apiRequest(
             "/.netlify/functions/add-personal-item",
             "post",
-            { username: auth.name, name: itemName, comment: itemComment, links: itemLinks, bought: false }
+            { item: { username: auth.name, name: itemName, comment: itemComment, links: itemLinks, bought: false } }
         )
-        if (!newItem.created) {
+        if (!response.created) {
             console.log("Item not added for some reason")
             return
         }
-
-        const newList = await apiRequest(
-            `/.netlify/functions/personal-list?username=${auth.name}`,
-            "get"
-        )
-        if (!newList.found) {
-            console.log("Couldn't find personal list for some reason")
-            return
-        }
-        updatePersonalList(newList.personalList)
+        updatePersonalList(response.personalList)
         resetForm()
     }
 
