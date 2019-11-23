@@ -1,8 +1,10 @@
 import React, { useContext, useEffect } from 'react'
 import { authContext } from "../contexts/AuthContext"
 import { listsContext } from "../contexts/ListsContext"
+import { itemsContext } from "../contexts/ItemsContext"
 import { apiRequest } from '../utils/Helpers'
 import NewPersonalItem from './NewPersonalItem'
+import EditPersonalItem from './EditPersonalItem'
 import PersonalItem from './PersonalItem'
 import '../App.css'
 import './Lists.css'
@@ -10,6 +12,7 @@ import './Lists.css'
 const PersonalList = () => {
   const { auth } = useContext(authContext)
   const { personalList, updatePersonalList } = useContext(listsContext)
+  const { isEditItemFormVisible } = useContext(itemsContext)
 
   useEffect(() => {
     const getPersonalList = async () => {
@@ -42,7 +45,10 @@ const PersonalList = () => {
           {personalList.map(item => <PersonalItem key={item.name} name={item.name} comment={item.comment} links={item.links} />)}
         </div>
       </div>
-      <NewPersonalItem />
+        {isEditItemFormVisible 
+          ? <EditPersonalItem />
+          : <NewPersonalItem />
+        }
     </div>
   )
 }

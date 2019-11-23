@@ -1,10 +1,18 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { itemsContext } from "../contexts/ItemsContext"
 import './Lists.css'
 
 const PersonalItem = ({ name, comment, links }) => {
+    const { updateItemToEdit, showEditItemForm } = useContext(itemsContext) 
+
+    const selectItemToEdit = () => {
+        const item = { name, comment, links }
+        showEditItemForm(true)
+        updateItemToEdit(item)
+    }
 
     return (
-        <p><i className="far fa-snowflake"></i>
+        <p><i onClick={selectItemToEdit} className="far fa-snowflake"></i>
             {name}
             <span className="item-comment"> - {comment}</span>, 
             {links ? links.map(link => {
@@ -17,5 +25,5 @@ const PersonalItem = ({ name, comment, links }) => {
         </p>
     )
 }
-  
+
 export default PersonalItem
