@@ -4,7 +4,7 @@
 
 .all-lists {
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row nowrap;
   width: 100%;
   min-height: 100vh;
   background-color: #d8dcd6;
